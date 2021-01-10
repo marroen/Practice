@@ -1,153 +1,157 @@
 class Searcher
 
-	# ~ Linear Search ~
-	# comparing the key to each item in a list,
-	# until it is found
-	# O(n * n) time, or O(n^2), worst-case
+  # ~ Linear Search ~
+  # comparing the key to each item in a list,
+  # until it is found
+  # O(n * n) time, or O(n^2), worst-case
 	
-	def linear_search_fast(array, key) # key to be found in array
+  def linear_search_fast(array, key) # key to be found in array
 	
-		if array.index(key).nil? # ruby-exclusive linear search
+    if array.index(key).nil? # ruby-exclusive linear search
 		
-			return -1 # terminates
+      return -1 # terminates
 			
-		else 
+    else 
 		
-			return "#{key} at index #{array.index(key)}"
+      return "#{key} at index #{array.index(key)}"
 			
-		end #{key} prints key, #{array.index(key)} prints index
-		
-	end
+    end #{key} prints key, #{array.index(key)} prints index
+  end
 	
-	# note: other languages often use a loop on line 9, making it slower
+  # note: other languages often use a loop on line 9, making it slower
 	
-	def linear_search_slow(array, key)
+  def linear_search_slow(array, key)
 	
-		i = 0
+    i = 0
 		
-		while i < array.length
+    while i < array.length
 		
-			if array[i] == key
+      if array[i] == key
 			
-				return "#{key} at index #{array.index(key)}"
+        return "#{key} at index #{array.index(key)}"
 				
-			end
+      end
 			
-			i += 1
+      i += 1
 			
-		end
+    end
 		
-		return -1
-	end
+    return -1
+  end
 	
-	# ~ Binary Search ~
-	# only works on sorted arrays
-	# divides each array into 2 subarrays,
-	# and looks for key in one of them
-	# O(log n) time, worst-case
+  # ~ Binary Search ~
+  # only works on sorted arrays
+  # divides each array into 2 subarrays,
+  # and looks for key in one of them
+  # O(log n) time, worst-case
 	
-	def binary_search_iterative(array, key)
+  def binary_search_iterative(array, key)
 	
-		low, high = 0, array.length - 1 # floor, roof
+    low, high = 0, array.length - 1 # floor, roof
 		
-		while low <= high # space between floor and roof
+    while low <= high # space between floor and roof
 		
-			mid = (low + high) >> 1 # finding mean
+      mid = (low + high) >> 1 # finding mean
 			
-			case key <=> array[mid] # comparator
+      case key <=> array[mid] # comparator
 			
-				when 1 # moving up
+        when 1 # moving up
 				
-					low = mid + 1
+          low = mid + 1
 					
-				when -1 # moving down
+        when -1 # moving down
 				
-					high = mid - 1
+	  high = mid - 1
 					
-				else # found
+        else # found
 				
-					return mid
+	  return mid
 					
-			end
-		end
+      end
+		
+    end
+  end
+	
+  def get_limits(array)
+	
+    [0, array.length - 1]
+		
+  end
+		
+  def binary_search_recursive(array, key, min=0, max=array.size-1)
+	
+    mid = (min + max) >> 1
+		
+    case array[mid] <=> key
+		
+      when 0
+			
+        mid
+				
+      when -1
+			
+        min = mid + 1
+				
+	binary_search_recursive(array, key, min, max)
+				
+      when 1
+			
+        max = mid - 1
+				
+	binary_search_recursive(array, key, min, max)
+	
+    end
+  end
+	
+  def df_search(adj_matrix, source, terminal)
+	
+    node_stack = [source]
+		
+      loop do
+		
+        current_node = node_stack.pop
+			
+	return false if current_node == nil
+			
+	return true if current_node == terminal
+			
+	children = (0..adj_matrix.size-1).to_a.select do |i|
+		
+          adj_matrix[current_node][i] == 1
+		
 	end
-	
-	def get_limits(array)
-		[0, array.length - 1]
-	end
-		
-	def binary_search_recursive(array, key, min=0, max=array.size-1)
-	
-		mid = (min + max) >> 1
-		
-		case array[mid] <=> key
-		
-			when 0
 			
-				mid
+	node_stack += children
+			
+      end
+  end	
+	
+  def bf_search(adj_matrix, source, terminal)
+	
+    node_queue = [source]
+		
+    loop do
+		
+      current_node = node_queue.pop
+			
+      p current_node
+			
+      return false if current_node == nil
+			
+      return true if current_node == terminal
+			
+      children = (0..adj_matrix.size-1).to_a.select do |i|
+			
+        adj_matrix[current_node][i] == 1
 				
-			when -1
+      end
 			
-				min = mid + 1
-				
-				binary_search_recursive(array, key, min, max)
-				
-			when 1
+      node_queue = children + node_queue
 			
-				max = mid - 1
-				
-				binary_search_recursive(array, key, min, max)
-	
-		end
-	end
-	
-	def df_search(adj_matrix, source, terminal)
-	
-		node_stack = [source]
+    end
+  end
 		
-		loop do
-		
-			current_node = node_stack.pop
-			
-			return false if current_node == nil
-			
-			return true if current_node == terminal
-			
-			children = (0..adj_matrix.size-1).to_a.select do |i|
-				adj_matrix[current_node][i] == 1
-			end
-			
-			node_stack += children
-			
-		end
-	end	
-	
-	def bf_search(adj_matrix, source, terminal)
-	
-		node_queue = [source]
-		
-		loop do
-		
-			current_node = node_queue.pop
-			
-			p current_node
-			
-			return false if current_node == nil
-			
-			return true if current_node == terminal
-			
-			children = (0..adj_matrix.size-1).to_a.select do |i|
-			
-				adj_matrix[current_node][i] == 1
-				
-			end
-			
-			node_queue = children + node_queue
-			
-		end
-	end
-		
-end		
+end # class end
 
 arr = [1,3,4,12,16,21,34,45,55,76,99,101]
 key = 21
