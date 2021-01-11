@@ -1,4 +1,4 @@
-class Searcher
+class Searcher # medium.com/@limichelle21/
 
   # ~ Linear Search ~
   # comparing the key to each item in a list,
