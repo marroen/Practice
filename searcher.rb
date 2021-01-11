@@ -7,10 +7,10 @@ class Searcher # medium.com/@limichelle21/
 	
   def linear_search_fast(array, key) # key to be found in array
     if array.index(key).nil? # ruby-exclusive linear search
-	    return -1 # terminates
-	  else 
-	    return "#{key} at index #{array.index(key)}"
-	  end #{key} prints key, #{array.index(key)} prints index
+      return -1 # terminates
+    else 
+      return "#{key} at index #{array.index(key)}"
+    end #{key} prints key, #{array.index(key)} prints index
   end
 	
   # note: other languages often use a loop on line 9, making it slower
